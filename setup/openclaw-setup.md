@@ -1,123 +1,123 @@
-﻿# Konfiguracja OpenClaw
+# OpenClaw Configuration
 
-Przewodnik instalacji i konfiguracji OpenClaw — runtime dla Twojego AI asystenta.
-
----
-
-## Czym jest OpenClaw?
-
-[OpenClaw](https://openclaw.dev) to framework do budowania AI agentów z dostępem do zewnętrznych narzędzi i kanałów komunikacji. Łączy model językowy (Claude, GPT, itp.) z Signal Messenger, umożliwiając stworzenie personalnego AI asystenta.
+Installation and configuration guide for OpenClaw — the runtime for your AI assistant.
 
 ---
 
-## Wymagania
+## What is OpenClaw?
 
-- Node.js 18+ (zalecane: 20 LTS lub 22)
-- npm lub yarn
-- Konto u providera AI (Anthropic, OpenAI, lub OpenRouter)
-- signal-cli skonfigurowany i działający (patrz [signal-cli-setup.md](signal-cli-setup.md))
+[OpenClaw](https://openclaw.dev) is a framework for building AI agents with access to external tools and communication channels. It connects a language model (Claude, GPT, etc.) with Signal Messenger, enabling you to create a personal AI assistant.
 
 ---
 
-## Krok 1: Instalacja Node.js
+## Requirements
+
+- Node.js 18+ (recommended: 20 LTS or 22)
+- npm or yarn
+- Account with an AI provider (Anthropic, OpenAI, or OpenRouter)
+- signal-cli configured and running (see [signal-cli-setup.md](signal-cli-setup.md))
+
+---
+
+## Step 1: Install Node.js
 
 ### Linux / macOS
 
 ```bash
-# Przez nvm (zalecane)
+# Via nvm (recommended)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
 nvm install 22
 nvm use 22
-node --version  # Powinno pokazać v22.x.x
+node --version  # Should show v22.x.x
 ```
 
 ### Windows
 
 ```powershell
-# Przez winget
+# Via winget
 winget install OpenJS.NodeJS.LTS
 
-# Lub pobierz instalator z https://nodejs.org/
+# Or download the installer from https://nodejs.org/
 ```
 
 ---
 
-## Krok 2: Instalacja OpenClaw
+## Step 2: Install OpenClaw
 
 ```bash
 npm install -g openclaw
 
-# Weryfikacja
+# Verify
 openclaw --version
 ```
 
 ---
 
-## Krok 3: Zainicjuj workspace
+## Step 3: Initialize workspace
 
 ```bash
-# Utwórz katalog dla asystenta
-mkdir ~/moj-asystent
-cd ~/moj-asystent
+# Create a directory for the assistant
+mkdir ~/my-assistant
+cd ~/my-assistant
 
-# Skopiuj pliki z szablonu
-cp /ścieżka/do/openclaw-buddy/workspace/* .
+# Copy files from the template
+cp /path/to/openclaw-buddy/workspace/* .
 ```
 
 ---
 
-## Krok 4: Skonfiguruj klucz API
+## Step 4: Configure API key
 
-### Anthropic Claude (rekomendowany)
+### Anthropic Claude (recommended)
 
 ```bash
-# Pobierz klucz API z: https://console.anthropic.com/
-openclaw config set apiKey "sk-ant-api03-TWOJ_KLUCZ"
+# Get your API key from: https://console.anthropic.com/
+openclaw config set apiKey "sk-ant-api03-YOUR_KEY"
 openclaw config set model "anthropic/claude-opus-4"
 
-# Lub przez zmienne środowiskowe
-export ANTHROPIC_API_KEY="sk-ant-api03-TWOJ_KLUCZ"
+# Or via environment variables
+export ANTHROPIC_API_KEY="sk-ant-api03-YOUR_KEY"
 ```
 
 ### OpenAI
 
 ```bash
-# Pobierz klucz API z: https://platform.openai.com/
-openclaw config set apiKey "sk-TWOJ_KLUCZ"
+# Get your API key from: https://platform.openai.com/
+openclaw config set apiKey "sk-YOUR_KEY"
 openclaw config set model "openai/gpt-4o"
 ```
 
-### OpenRouter (dostęp do wielu modeli przez jeden klucz)
+### OpenRouter (access to many models through one key)
 
 ```bash
-# Pobierz klucz API z: https://openrouter.ai/
-openclaw config set apiKey "sk-or-v1-TWOJ_KLUCZ"
+# Get your API key from: https://openrouter.ai/
+openclaw config set apiKey "sk-or-v1-YOUR_KEY"
 openclaw config set model "openrouter/anthropic/claude-sonnet-4"
 ```
 
 ---
 
-## Krok 5: Skonfiguruj Signal
+## Step 5: Configure Signal
 
 ```bash
-# Wskaż daemon signal-cli
-openclaw config set plugins.signal.account "+TWOJ_NUMER"
+# Point to the signal-cli daemon
+openclaw config set plugins.signal.account "+YOUR_NUMBER"
 openclaw config set plugins.signal.daemonUrl "http://127.0.0.1:8080"
 openclaw config set plugins.signal.enabled true
 ```
 
-Lub edytuj bezpośrednio plik konfiguracyjny:
+Or edit the configuration file directly:
 
 ```json
-// ~/.openclaw/config.json (lub %APPDATA%\openclaw\config.json na Windows)
+// ~/.openclaw/config.json (or %APPDATA%\openclaw\config.json on Windows)
 {
   "model": "anthropic/claude-opus-4",
-  "apiKey": "TWOJ_KLUCZ_API",
-  "workspace": "/ścieżka/do/moj-asystent",
+  "apiKey": "YOUR_API_KEY",
+  "workspace": "/path/to/my-assistant",
   "plugins": {
     "signal": {
       "enabled": true,
-      "account": "+TWOJ_NUMER_TELEFONU",
+      "account": "+YOUR_PHONE_NUMBER",
       "daemonUrl": "http://127.0.0.1:8080"
     }
   }
@@ -126,52 +126,52 @@ Lub edytuj bezpośrednio plik konfiguracyjny:
 
 ---
 
-## Krok 6: Pierwsze uruchomienie
+## Step 6: First launch
 
 ```bash
-# Sprawdź konfigurację
+# Check configuration
 openclaw config show
 
-# Sprawdź połączenie z Signal
+# Check Signal connection
 openclaw gateway status
 
-# Uruchom asystenta
+# Start the assistant
 openclaw start
 ```
 
-Po uruchomieniu, wyślij wiadomość Signal na numer asystenta — powinien odpowiedzieć!
+After starting, send a Signal message to the assistant's number — it should respond!
 
 ---
 
-## Krok 7: Heartbeat (proaktywne sprawdzenia)
+## Step 7: Heartbeat (proactive checks)
 
-Heartbeat to mechanizm który regularnie "budzi" asystenta żeby wykonał checklistę z HEARTBEAT.md.
+Heartbeat is a mechanism that regularly "wakes up" the assistant to run through the checklist from HEARTBEAT.md.
 
 ```bash
-# Ustaw heartbeat co 30 minut
+# Set heartbeat every 30 minutes
 openclaw config set heartbeat.interval 1800
 openclaw config set heartbeat.enabled true
 
-# Opcjonalnie: specjalny model dla heartbeatów (tańszy)
+# Optional: a specific model for heartbeats (cheaper)
 openclaw config set heartbeat.model "anthropic/claude-haiku-3-5"
 ```
 
 ---
 
-## Krok 8: Konfiguracja grup Signal
+## Step 8: Configure Signal groups
 
-Jeśli chcesz żeby asystent działał w grupach Signal:
+If you want the assistant to work in Signal groups:
 
 ```bash
-# Najpierw znajdź ID grupy (patrz signal-cli-setup.md)
-# Potem dodaj grupę do OpenClaw:
-openclaw config set plugins.signal.groups[0].id "TWOJE_GROUP_ID="
-openclaw config set plugins.signal.groups[0].name "Moja Grupa"
+# First find the group ID (see signal-cli-setup.md)
+# Then add the group to OpenClaw:
+openclaw config set plugins.signal.groups[0].id "YOUR_GROUP_ID="
+openclaw config set plugins.signal.groups[0].name "My Group"
 ```
 
 ---
 
-## Uruchamianie jako usługa
+## Running as a service
 
 ### Linux (systemd)
 
@@ -183,8 +183,8 @@ After=network.target signal-cli.service
 
 [Service]
 Type=simple
-User=twoja_nazwa_uzytkownika
-WorkingDirectory=/home/twoja_nazwa_uzytkownika
+User=your_username
+WorkingDirectory=/home/your_username
 ExecStart=/usr/local/bin/openclaw start
 Restart=on-failure
 RestartSec=10
@@ -209,73 +209,73 @@ Register-ScheduledTask -TaskName "OpenClaw" -Action $action -Trigger $trigger -R
 
 ---
 
-## Przydatne Komendy
+## Useful Commands
 
 ```bash
-# Status Gateway (połączenie z Signal)
+# Gateway status (Signal connection)
 openclaw gateway status
 
-# Wyświetl logi
+# Show logs
 openclaw logs
 
-# Wyświetl logi na żywo
+# Show live logs
 openclaw logs --follow
 
-# Zatrzymaj asystenta
+# Stop the assistant
 openclaw stop
 
 # Restart
 openclaw restart
 
-# Pokaż konfigurację
+# Show configuration
 openclaw config show
 
-# Lista aktywnych sesji agenta
+# List active agent sessions
 openclaw sessions list
 ```
 
 ---
 
-## Rozwiązywanie Problemów
+## Troubleshooting
 
 ### "Cannot connect to gateway"
 ```bash
-# Sprawdź czy signal-cli daemon działa
+# Check if signal-cli daemon is running
 curl http://localhost:8080/api/v1/rpc -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"version","id":1}'
 
-# Sprawdź konfigurację
+# Check configuration
 openclaw config show | grep signal
 ```
 
 ### "API key invalid"
 ```bash
-# Sprawdź klucz API
+# Check API key
 openclaw config show | grep apiKey
 
-# Przetestuj bezpośrednio
+# Test directly
 curl https://api.anthropic.com/v1/messages \
-  -H "x-api-key: TWOJ_KLUCZ" \
+  -H "x-api-key: YOUR_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{"model":"claude-3-haiku-20240307","max_tokens":10,"messages":[{"role":"user","content":"hi"}]}'
 ```
 
-### Agent nie czyta plików workspace
+### Agent doesn't read workspace files
 ```bash
-# Sprawdź czy workspace jest prawidłowo skonfigurowany
+# Check if workspace is properly configured
 openclaw config show | grep workspace
 
-# Upewnij się że pliki są w katalogu workspace
-ls ~/moj-asystent/
-# Powinno pokazać: AGENTS.md, SOUL.md, USER.md, MEMORY.md, TOOLS.md, HEARTBEAT.md, IDENTITY.md
+# Make sure files are in the workspace directory
+ls ~/my-assistant/
+# Should show: AGENTS.md, SOUL.md, USER.md, MEMORY.md, TOOLS.md, HEARTBEAT.md, IDENTITY.md
 ```
 
 ---
 
-## Przydatne Linki
+## Useful Links
 
-- [OpenClaw Dokumentacja](https://openclaw.dev)
+- [OpenClaw Documentation](https://openclaw.dev)
 - [OpenClaw GitHub](https://github.com/openclaw/openclaw)
 - [Anthropic API Keys](https://console.anthropic.com/)
 - [OpenRouter](https://openrouter.ai/)

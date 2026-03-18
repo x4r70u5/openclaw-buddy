@@ -30,7 +30,7 @@ from pathlib import Path
 # ============================================================
 
 # Your Signal account phone number
-SIGNAL_ACCOUNT = "+TWOJ_NUMER_TELEFONU"
+SIGNAL_ACCOUNT = "+YOUR_PHONE_NUMBER"
 
 # signal-cli daemon URL
 SIGNAL_DAEMON_URL = "http://127.0.0.1:8080/api/v1/rpc"

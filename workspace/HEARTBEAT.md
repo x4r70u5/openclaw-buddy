@@ -1,105 +1,105 @@
-﻿# HEARTBEAT.md - Proaktywne Sprawdzenia
+# HEARTBEAT.md - Proactive Checks
 
 <!--
-INSTRUKCJA:
-Ten plik to checklist dla asystenta podczas heartbeatów.
-Heartbeat to periodyczny "puls" — OpenClaw wysyła wiadomość do asystenta
-co jakiś czas (np. co 30 minut) i asystent wykonuje tę checklistę.
+INSTRUCTIONS:
+This file is a checklist for the assistant during heartbeats.
+A heartbeat is a periodic "pulse" — OpenClaw sends a message to the assistant
+at regular intervals (e.g. every 30 minutes) and the assistant runs this checklist.
 
-Jeśli nic ważnego się nie dzieje → odpowiedz HEARTBEAT_OK
-Jeśli coś wymaga uwagi → wyślij wiadomość do użytkownika
+If nothing important is happening → respond HEARTBEAT_OK
+If something needs attention → send a message to the user
 
-ZASADA: Nie spamuj! Tylko pisz gdy masz coś wartego powiedzenia.
-Ciche heartbeaty (HEARTBEAT_OK) są w porządku i wskazane.
+RULE: Don't spam! Only write when you have something worth saying.
+Silent heartbeats (HEARTBEAT_OK) are fine and encouraged.
 
-Dostosuj tę listę do swoich potrzeb — usuń/dodaj sekcje.
+Customize this list to your needs — remove/add sections.
 -->
 
 ---
 
-## Zasady Heartbeatu
+## Heartbeat Rules
 
-**Gdy pisać do użytkownika:**
-- Ważny email przyszedł
-- Nadchodzące spotkanie (< 2h)
-- Coś ciekawego/pilnego znalazłeś
-- Minęło > 8h od ostatniej rozmowy i masz coś wartego powiedzenia
+**When to message the user:**
+- An important email arrived
+- Upcoming meeting (< 2h)
+- Found something interesting/urgent
+- More than 8h since last conversation and you have something worth saying
 
-**Gdy milczeć (HEARTBEAT_OK):**
-- Późna noc (23:00-08:00) chyba że pilne
-- Użytkownik jest wyraźnie zajęty
-- Nic nowego od ostatniego sprawdzenia
-- Sprawdzałeś < 30 minut temu
+**When to stay silent (HEARTBEAT_OK):**
+- Late night (23:00-08:00) unless urgent
+- User is clearly busy
+- Nothing new since last check
+- Last check was < 30 minutes ago
 
 ---
 
 ## Checklist
 
-### 📧 Email (jeśli Gmail skonfigurowany)
-<!-- Odkomentuj i dostosuj gdy Gmail jest skonfigurowany -->
+### 📧 Email (if Gmail configured)
+<!-- Uncomment and customize when Gmail is configured -->
 <!--
-Sprawdź nieprzeczytane emaile:
+Check unread emails:
 ```python
-python /ścieżka/do/check_gmail.py
+python /path/to/check_gmail.py
 ```
-- Szukaj: pilne emaile, od ważnych nadawców
-- Ignoruj: newsletter, promocje, automated notifications
-- Próg alertu: emaile od konkretnych osób lub z słowem "urgent/pilne/ASAP"
+- Look for: urgent emails, from important senders
+- Ignore: newsletters, promotions, automated notifications
+- Alert threshold: emails from specific people or containing "urgent/ASAP"
 -->
 
-### 📅 Kalendarz (jeśli Google Calendar skonfigurowany)  
-<!-- Odkomentuj gdy Calendar jest skonfigurowany -->
+### 📅 Calendar (if Google Calendar configured)
+<!-- Uncomment when Calendar is configured -->
 <!--
-Sprawdź nadchodzące wydarzenia:
+Check upcoming events:
 ```python
-python /ścieżka/do/check_calendar.py
+python /path/to/check_calendar.py
 ```
-- Alertuj na: spotkania w ciągu 2h, zmiany w agendzie
-- Ignoruj: całodniowe eventy chyba że coś ważnego
+- Alert on: meetings within 2h, agenda changes
+- Ignore: all-day events unless something important
 -->
 
-### 🤖 Newsy AI (1-2x dziennie)
+### 🤖 AI News (1-2x daily)
 <!--
-Szybkie sprawdzenie co nowego w świecie AI:
+Quick check on what's new in AI:
 - Brave Search: "AI news today site:techcrunch.com OR site:theverge.com"
-- Lub RSS z ulubionych blogów
-- Wyślij do użytkownika jeśli coś naprawdę ciekawego
-- Nie spamuj codziennie — tylko przy prawdziwych przełomach
+- Or RSS from favorite blogs
+- Send to user if something truly interesting
+- Don't spam daily — only for real breakthroughs
 -->
 
-### 🦋 Bluesky/Social (jeśli skonfigurowane)
-<!-- Odkomentuj gdy social media są skonfigurowane -->
+### 🦋 Bluesky/Social (if configured)
+<!-- Uncomment when social media are configured -->
 <!--
-Sprawdź powiadomienia, odpowiedz na mentions:
+Check notifications, respond to mentions:
 ```python
-python /ścieżka/do/check_bsky.py
+python /path/to/check_bsky.py
 ```
 -->
 
-### 🧠 Utrzymanie Pamięci (co kilka dni)
+### 🧠 Memory Maintenance (every few days)
 <!--
-Periodycznie (nie przy każdym heartbeat!):
-1. Przejrzyj ostatnie memory/YYYY-MM-DD.md
-2. Zidentyfikuj co warto przenieść do MEMORY.md
-3. Zaktualizuj MEMORY.md
-4. Wyczyść przestarzałe wpisy
+Periodically (not every heartbeat!):
+1. Review recent memory/YYYY-MM-DD.md files
+2. Identify what's worth moving to MEMORY.md
+3. Update MEMORY.md
+4. Clean up outdated entries
 -->
 
 ---
 
-## Stan Sprawdzeń
+## Check State
 
 <!--
-UWAGA (Windows): curl może mieć problemy z JSON na Windows PowerShell.
-Zamiast curl użyj Invoke-WebRequest lub skryptów Python.
+NOTE (Windows): curl may have issues with JSON on Windows PowerShell.
+Instead of curl, use Invoke-WebRequest or Python scripts.
 
-Przykład PowerShell:
+PowerShell example:
 $headers = @{"Content-Type"="application/json"}
 $body = '{"query": "AI news"}'
 Invoke-WebRequest -Uri "https://api.example.com" -Method POST -Headers $headers -Body $body
 -->
 
-Asystent może śledzić ostatnie sprawdzenia w pliku:
+The assistant can track last checks in the file:
 `memory/heartbeat-state.json`
 
 ```json
@@ -111,10 +111,10 @@ Asystent może śledzić ostatnie sprawdzenia w pliku:
     "social": null,
     "memoryMaintenance": null
   },
-  "notes": "Tutaj asystent może zostawić notatki między heartbeatami"
+  "notes": "The assistant can leave notes here between heartbeats"
 }
 ```
 
 ---
 
-*Edytuj ten plik gdy chcesz zmienić co asystent sprawdza proaktywnie.*
+*Edit this file when you want to change what the assistant checks proactively.*

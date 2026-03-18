@@ -1,284 +1,284 @@
-﻿# 🤖 OpenClaw Buddy - Szablon AI Asystenta dla Signal
+# 🤖 OpenClaw Buddy - AI Assistant Template for Signal
 
-> Kompletny szablon do zbudowania własnego AI asystenta działającego przez Signal - na bazie OpenClaw + signal-cli.
-
----
-
-## 💡 Co to jest?
-
-**OpenClaw Buddy** to gotowy szkielet do stworzenia personalnego asystenta AI dostępnego przez Signal Messenger. Asystent:
-
-- **Odpowiada na wiadomości Signal** - prywatne i grupowe
-- **Pamięta kontekst** - przez pliki Markdown i opcjonalnie Neo4j (baza grafowa)
-- **Działa proaktywnie** - sprawdza email, kalendarz, powiadomienia (heartbeat)
-- **Ma osobowość** - konfigurowalną przez `SOUL.md`
-- **Uczy się** - aktualizuje własne pliki, wyciąga wnioski z błędów
-
-Przykład tego co możesz zbudować: asystent-kumpel który pisze do Ciebie przez Signal, pamięta Twoje preferencje, komentuje wiadomości ze świata AI i wysyła Ci powiadomienia gdy coś ważnego się dzieje.
+> A complete template for building your own AI assistant running on Signal — powered by OpenClaw + signal-cli.
 
 ---
 
-## 📋 Wymagania
+## 💡 What is this?
 
-### Obowiązkowe
+**OpenClaw Buddy** is a ready-made skeleton for creating a personal AI assistant accessible through Signal Messenger. The assistant:
 
-| Narzędzie | Wersja | Opis |
-|-----------|--------|------|
-| [OpenClaw](https://openclaw.dev) | latest | Główny runtime dla agenta AI |
-| [signal-cli](https://github.com/AsamK/signal-cli) | 0.13+ | CLI klient Signal z trybem daemon HTTP |
-| Java | 21+ | Wymagane przez signal-cli |
-| Node.js | 18+ | Wymagane przez OpenClaw |
-| Python | 3.10+ | Skrypty pomocnicze |
+- **Responds to Signal messages** - both private and group
+- **Remembers context** - via Markdown files and optionally Neo4j (graph database)
+- **Acts proactively** - checks email, calendar, notifications (heartbeat)
+- **Has personality** - configurable through `SOUL.md`
+- **Learns** - updates its own files, draws conclusions from mistakes
 
-### Opcjonalne
-
-| Narzędzie | Opis |
-|-----------|------|
-| [Neo4j Aura](https://neo4j.com/cloud/aura/) | Baza grafowa dla długoterminowej pamięci (free tier dostępny) |
-| [atproto](https://pypi.org/project/atproto/) | Biblioteka Bluesky do postowania |
-| Gmail OAuth | Dostęp do emaila przez API |
+Example of what you can build: a buddy-assistant that texts you on Signal, remembers your preferences, comments on AI news, and sends you notifications when something important happens.
 
 ---
 
-## 🚀 Instalacja krok po kroku
+## 📋 Requirements
 
-### Krok 1: Sklonuj ten szablon
+### Required
+
+| Tool | Version | Description |
+|------|---------|-------------|
+| [OpenClaw](https://openclaw.dev) | latest | Main runtime for the AI agent |
+| [signal-cli](https://github.com/AsamK/signal-cli) | 0.13+ | Signal CLI client with HTTP daemon mode |
+| Java | 21+ | Required by signal-cli |
+| Node.js | 18+ | Required by OpenClaw |
+| Python | 3.10+ | Helper scripts |
+
+### Optional
+
+| Tool | Description |
+|------|-------------|
+| [Neo4j Aura](https://neo4j.com/cloud/aura/) | Graph database for long-term memory (free tier available) |
+| [atproto](https://pypi.org/project/atproto/) | Bluesky library for posting |
+| Gmail OAuth | Email access via API |
+
+---
+
+## 🚀 Installation Step by Step
+
+### Step 1: Clone this template
 
 ```bash
-git clone https://github.com/TWOJ_USERNAME/openclaw-buddy.git moj-asystent
-cd moj-asystent
+git clone https://github.com/YOUR_USERNAME/openclaw-buddy.git my-assistant
+cd my-assistant
 ```
 
-### Krok 2: Zainstaluj OpenClaw
+### Step 2: Install OpenClaw
 
 ```bash
 npm install -g openclaw
 openclaw --version
 ```
 
-Szczegóły: [setup/openclaw-setup.md](setup/openclaw-setup.md)
+Details: [setup/openclaw-setup.md](setup/openclaw-setup.md)
 
-### Krok 3: Skonfiguruj signal-cli
+### Step 3: Configure signal-cli
 
-Pobierz, zainstaluj i uruchom signal-cli jako daemon HTTP na porcie 8080.
+Download, install, and run signal-cli as an HTTP daemon on port 8080.
 
-Szczegóły: [setup/signal-cli-setup.md](setup/signal-cli-setup.md)
+Details: [setup/signal-cli-setup.md](setup/signal-cli-setup.md)
 
-### Krok 4: Skopiuj workspace do katalogu OpenClaw
+### Step 4: Copy workspace to the OpenClaw directory
 
 ```bash
-# Znajdź katalog workspace OpenClaw (zwykle ~/clawd)
+# Find the OpenClaw workspace directory (usually ~/clawd)
 cp workspace/* ~/clawd/
 ```
 
-### Krok 5: Dostosuj pliki konfiguracyjne
+### Step 5: Customize configuration files
 
-Edytuj w kolejności:
+Edit in order:
 
-1. **`workspace/IDENTITY.md`** - nadaj asystentowi imię i osobowość
-2. **`workspace/SOUL.md`** - zdefiniuj charakter i zasady działania
-3. **`workspace/USER.md`** - opisz siebie (asystent będzie to czytał)
-4. **`workspace/TOOLS.md`** - skonfiguruj grupy Signal i inne narzędzia
-5. **`workspace/HEARTBEAT.md`** - ustaw co asystent ma sprawdzać proaktywnie
-6. **`workspace/AGENTS.md`** - instrukcje dla agenta (możesz zostawić domyślne)
+1. **`workspace/IDENTITY.md`** - give the assistant a name and personality
+2. **`workspace/SOUL.md`** - define character and behavioral rules
+3. **`workspace/USER.md`** - describe yourself (the assistant will read this)
+4. **`workspace/TOOLS.md`** - configure Signal groups and other tools
+5. **`workspace/HEARTBEAT.md`** - set up what the assistant should check proactively
+6. **`workspace/AGENTS.md`** - agent instructions (you can leave defaults)
 
-### Krok 6: (Opcjonalnie) Skonfiguruj Neo4j
+### Step 6: (Optional) Configure Neo4j
 
 ```bash
-# Zainstaluj bibliotekę
+# Install the library
 pip install neo4j
 
-# Edytuj credentials w skryptach
+# Edit credentials in scripts
 nano scripts/neo4j_context.py
 nano scripts/neo4j_add.py
 ```
 
-### Krok 7: Uruchom!
+### Step 7: Launch!
 
 ```bash
-# Upewnij się że signal-cli daemon działa
+# Make sure signal-cli daemon is running
 curl -X POST http://localhost:8080/api/v1/rpc \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"version","id":1}'
 
-# Uruchom OpenClaw
+# Start OpenClaw
 openclaw start
 ```
 
 ---
 
-## ⚙️ Konfiguracja modelu AI
+## ⚙️ AI Model Configuration
 
-OpenClaw wspiera wiele providerów:
+OpenClaw supports multiple providers:
 
 ```bash
-# Anthropic Claude (rekomendowany)
+# Anthropic Claude (recommended)
 openclaw config set model anthropic/claude-opus-4
 
 # OpenAI GPT-4
 openclaw config set model openai/gpt-4o
 
-# OpenRouter (dostęp do wielu modeli)
+# OpenRouter (access to many models)
 openclaw config set model openrouter/anthropic/claude-sonnet-4
 ```
 
 ---
 
-## 🎭 Personalizacja - Jak sprawić żeby to "żyło"
+## 🎭 Personalization - How to Make It "Come Alive"
 
-### 1. Nadaj imię i charakter
+### 1. Give it a name and character
 
-W `IDENTITY.md` i `SOUL.md` opisz kto jest Twój asystent. Nie rób kolejnego "pomocnego AI" - nadaj mu konkretną osobowość:
-- Jakim językiem mówi? (formalny / luźny / śmieszny)
-- Co go interesuje?
-- Jakie ma "opinie"?
-- Jak reaguje na różne sytuacje?
+In `IDENTITY.md` and `SOUL.md` describe who your assistant is. Don't make yet another "helpful AI" — give it a distinct personality:
+- What language style does it use? (formal / casual / humorous)
+- What are its interests?
+- What "opinions" does it have?
+- How does it react to different situations?
 
-### 2. Opisz siebie
+### 2. Describe yourself
 
-`USER.md` to profil Ciebie - asystent czyta go przy każdej sesji. Im więcej tam napiszesz, tym lepiej Cię "zna":
-- Twoja praca, projekty, zainteresowania
-- Jak lubisz być traktowany
-- Czego NIE lubisz (ważne!)
-- Ważne daty, osoby w Twoim życiu
+`USER.md` is your profile — the assistant reads it at every session. The more you write here, the better it "knows" you:
+- Your work, projects, interests
+- How you like to be treated
+- What you DON'T like (important!)
+- Important dates, people in your life
 
-### 3. Skonfiguruj heartbeat
+### 3. Configure heartbeat
 
-`HEARTBEAT.md` to checklist który asystent wykonuje proaktywnie. Możesz ustawić by:
-- Sprawdzał Twój email co kilka godzin
-- Informował o nadchodzących spotkaniach
-- Wyszukiwał ciekawe newsy z AI
-- Pisał do Ciebie jeśli minęło dużo czasu
+`HEARTBEAT.md` is a checklist the assistant runs proactively. You can set it to:
+- Check your email every few hours
+- Inform you about upcoming meetings
+- Search for interesting AI news
+- Text you if too much time has passed
 
-### 4. Pamięć długoterminowa
+### 4. Long-term memory
 
-- **`MEMORY.md`** - asystent zapisuje tu ważne informacje między sesjami
-- **Neo4j** (opcjonalne) - baza grafowa dla bardziej strukturalnej pamięci
-- **`memory/YYYY-MM-DD.md`** - dzienne logi co się działo
+- **`MEMORY.md`** - the assistant saves important information here between sessions
+- **Neo4j** (optional) - graph database for more structural memory
+- **`memory/YYYY-MM-DD.md`** - daily logs of what happened
 
-### 5. Wskazówki
+### 5. Tips
 
-- ✅ Pisz do asystenta naturalnie - odpiszę w podobnym tonie
-- ✅ Poprawiaj go gdy coś zrobi nie tak - uczy się
-- ✅ Daj mu dostęp do narzędzi które lubisz (Bluesky, Gmail, etc.)
-- ⚠️ Nie dawaj mu dostępu do kont które nie mogą "wysyłać dziwnych rzeczy"
-- ⏳ Nie spodziewaj się perfekcji od razu - potrzeba kilku dni kalibracji
+- ✅ Text the assistant naturally — it responds in a similar tone
+- ✅ Correct it when it does something wrong — it learns
+- ✅ Give it access to tools you like (Bluesky, Gmail, etc.)
+- ⚠️ Don't give it access to accounts that can't "send weird things"
+- ⏳ Don't expect perfection right away — it takes a few days of calibration
 
 ---
 
-## 🗂️ Struktura projektu
+## 🗂️ Project Structure
 
 ```
 openclaw-buddy/
-├── README.md                    # Ten plik
-├── workspace/                   # Pliki do skopiowania do ~/clawd/
-│   ├── AGENTS.md               # Instrukcje dla agenta
-│   ├── SOUL.md                 # Osobowość asystenta
-│   ├── USER.md                 # Profil użytkownika
-│   ├── MEMORY.md               # Długoterminowa pamięć
-│   ├── TOOLS.md                # Konfiguracja narzędzi
-│   ├── HEARTBEAT.md            # Proaktywne sprawdzenia
-│   └── IDENTITY.md             # Tożsamość asystenta
-├── scripts/                     # Skrypty pomocnicze Python
-│   ├── neo4j_context.py        # Ładowanie kontekstu z Neo4j
-│   └── neo4j_add.py            # Dodawanie faktów do Neo4j
-├── database/                    # Schematy bazy danych
+├── README.md                    # This file
+├── workspace/                   # Files to copy to ~/clawd/
+│   ├── AGENTS.md               # Agent instructions
+│   ├── SOUL.md                 # Assistant personality
+│   ├── USER.md                 # User profile
+│   ├── MEMORY.md               # Long-term memory
+│   ├── TOOLS.md                # Tool configuration
+│   ├── HEARTBEAT.md            # Proactive checks
+│   └── IDENTITY.md             # Assistant identity
+├── scripts/                     # Python helper scripts
+│   ├── neo4j_context.py        # Load context from Neo4j
+│   └── neo4j_add.py            # Add facts to Neo4j
+├── database/                    # Database schemas
 │   ├── schema.sql              # SQLite schema
-│   └── neo4j-schema.md         # Neo4j schema i Cypher queries
-├── setup/                       # Przewodniki instalacji
-│   ├── signal-cli-setup.md     # Konfiguracja signal-cli
-│   └── openclaw-setup.md       # Konfiguracja OpenClaw
-└── examples/                    # Przykładowe skrypty
-    ├── send_message.py         # Wysyłanie wiadomości Signal
-    └── bsky_post.py            # Postowanie na Bluesky
+│   └── neo4j-schema.md         # Neo4j schema and Cypher queries
+├── setup/                       # Installation guides
+│   ├── signal-cli-setup.md     # signal-cli configuration
+│   └── openclaw-setup.md       # OpenClaw configuration
+└── examples/                    # Example scripts
+    ├── send_message.py         # Sending Signal messages
+    └── bsky_post.py            # Posting to Bluesky
 ```
 
 ---
 
 ## 🔧 Troubleshooting / FAQ
 
-### signal-cli nie startuje
+### signal-cli won't start
 
 ```bash
-# Sprawdź czy Java 21+ jest zainstalowana
+# Check if Java 21+ is installed
 java -version
 
-# Sprawdź czy port 8080 nie jest zajęty
+# Check if port 8080 is in use
 netstat -an | grep 8080
 
-# Uruchom z logami
+# Run with logs
 signal-cli --verbose daemon --http 127.0.0.1:8080
 ```
 
-### OpenClaw nie widzi Signala
+### OpenClaw can't see Signal
 
-Upewnij się że w konfiguracji OpenClaw masz ustawiony poprawny adres daemona:
+Make sure the OpenClaw configuration has the correct daemon address:
 ```bash
-# Sprawdź konfigurację
+# Check configuration
 openclaw config show
 
-# Signal-cli powinien działać pod
+# signal-cli should be running at
 http://127.0.0.1:8080
 ```
 
-### Asystent nie odpowiada na wiadomości
+### Assistant doesn't respond to messages
 
-1. Sprawdź czy OpenClaw jest uruchomiony (`openclaw status`)
-2. Sprawdź czy signal-cli daemon działa i odbiera wiadomości
-3. Sprawdź logi OpenClaw w poszukiwaniu błędów
-4. Wyślij testową wiadomość i sprawdź logi w czasie rzeczywistym
+1. Check if OpenClaw is running (`openclaw status`)
+2. Check if the signal-cli daemon is running and receiving messages
+3. Check OpenClaw logs for errors
+4. Send a test message and check logs in real time
 
-### Broken encoding / krzaczki w plikach (Windows)
+### Broken encoding / garbled characters (Windows)
 
-Na Windows używaj zawsze:
+On Windows always use:
 ```powershell
-# Zamiast Invoke-RestMethod, używaj curl.exe
+# Instead of Invoke-RestMethod, use curl.exe
 C:\Windows\System32\curl.exe -X POST ...
 
-# Dla Python z emoji/polskimi znakami
-python -X utf8 twój_skrypt.py
+# For Python with emoji/special characters
+python -X utf8 your_script.py
 ```
 
-### Asystent "zapomina" między sesjami
+### Assistant "forgets" between sessions
 
-To normalne — LLM nie ma stanu między sesjami. Dlatego istnieje system plików:
-- Upewnij się że `AGENTS.md` nakazuje czytanie `memory/YYYY-MM-DD.md` na starcie
-- Upewnij się że asystent zapisuje ważne rzeczy do plików podczas sesji
-- Rozważ Neo4j dla strukturalnej pamięci długoterminowej
+This is normal — LLMs don't have state between sessions. That's why the file system exists:
+- Make sure `AGENTS.md` instructs reading `memory/YYYY-MM-DD.md` at startup
+- Make sure the assistant saves important things to files during sessions
+- Consider Neo4j for structural long-term memory
 
-### Asystent odpowiada w złym języku lub tonie
+### Assistant responds in the wrong language or tone
 
-Edytuj `SOUL.md` i `USER.md` — są to najważniejsze pliki wpływające na styl komunikacji. Bądź konkretny: zamiast "mów naturalnie" napisz dokładnie co Ci przeszkadza i jak chcesz żeby mówił.
+Edit `SOUL.md` and `USER.md` — these are the most important files affecting communication style. Be specific: instead of "talk naturally" write exactly what bothers you and how you want it to speak.
 
-### Zbyt wiele powiadomień / za mało powiadomień
+### Too many notifications / not enough notifications
 
-Dostosuj `HEARTBEAT.md` — możesz zmienić częstotliwość sprawdzeń, dodać lub usunąć zadania. Pamiętaj: każdy heartbeat to call do API (koszt tokenów).
-
----
-
-## 🔐 Bezpieczeństwo
-
-- **Nigdy nie commituj** plików z prawdziwymi kluczami API, tokenami, ani numerami telefonów
-- `.gitignore` w tym repozytorium wyklucza `TOOLS.md` i `*.pickle` - dodaj swoje sekrety tam
-- signal-cli daemon domyślnie nasłuchuje tylko na `localhost` - nie wystawiaj go na zewnątrz
-- Asystent ma dostęp do Twoich plików i wiadomości - traktuj to jak zaufany program
+Adjust `HEARTBEAT.md` — you can change check frequency, add or remove tasks. Remember: each heartbeat is an API call (token cost).
 
 ---
 
-## 🤝 Kontrybucja
+## 🔐 Security
 
-Pull requesty mile widziane! Szczególnie:
-- Przykłady nowych narzędzi (Slack, Teams, Telegram)
-- Szablony SOUL.md dla różnych osobowości
-- Skrypty do nowych źródeł danych
-- Poprawki dokumentacji
-
----
-
-## 📄 Licencja
-
-MIT - rób co chcesz, ale nie obwiniaj mnie jeśli Twój asystent postanowi wysłać dziwne wiadomości do Twoich znajomych. 😄
+- **Never commit** files with real API keys, tokens, or phone numbers
+- `.gitignore` in this repository excludes `TOOLS.md` and `*.pickle` - add your secrets there
+- signal-cli daemon listens only on `localhost` by default - don't expose it externally
+- The assistant has access to your files and messages - treat it as a trusted program
 
 ---
 
-*Zbudowany z ❤️ i dużą ilością eksperymentów.*
+## 🤝 Contributing
+
+Pull requests are welcome! Especially:
+- Examples of new tools (Slack, Teams, Telegram)
+- SOUL.md templates for different personalities
+- Scripts for new data sources
+- Documentation improvements
+
+---
+
+## 📄 License
+
+MIT - do what you want, but don't blame me if your assistant decides to send weird messages to your friends. 😄
+
+---
+
+*Built with ❤️ and a lot of experimentation.*
