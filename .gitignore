@@ -1,0 +1,41 @@
+﻿# Secrets and personal data — NEVER commit these!
+workspace/TOOLS.md
+workspace/MEMORY.md
+workspace/USER.md
+*.pickle
+*.env
+.env
+config.json
+credentials.json
+*_token.json
+*_credentials.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+memory/
+
+# Database files (contain personal data)
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
